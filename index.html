@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="UTF-8" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</head>
+<body>
+<style type="text/css">
+html, body, ul,h1,p, li{
+	padding: 0;
+	margin: 0;
+}
+body{
+	font-family: Hu, sans-serif;
+}
+ul{
+	background: #b7b6b6;
+	margin-top: 20px;
+}
+ul li{
+	display: inline-block;
+	
+	padding-top: 15px;
+	padding-bottom: 14px;
+}
+ul li a{
+	text-decoration: none;
+	color: black;
+	margin-left: 20px;
+	font-size: 21px;
+	text-align: center;
+	padding: 15px 20px;
+
+} 
+ul li a:hover{
+	background: #f2f1f1;
+}
+
+#text, #map{
+	width: 600px;
+	height: 400px;
+	padding-left: 35px;
+	background: #f2f1f1;
+	margin: 0;
+}
+#text{
+	padding-top: 15px;
+}
+#map{
+	position: relative
+}
+#mapContent{
+	position: absolute;
+	top:0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	width: 90%;
+	height: 90%;
+	margin: auto;
+}
+
+</style>
+
+<ul id="tabs">
+	<li><a href="#" class="links" id="textBtn">About</a></li>
+	<li><a href="#" class="links" id="mapBtn">Map</a></li>
+</ul>
+
+<div id="text" class="content">
+	<h2>Map with center Vratsa</h2>
+	<p style="padding-right: 30px; text-align: justify;"> Vratsa is a city in northwestern Bulgaria, at the foothills of the Balkan Mountains. It is the administrative centre of the homonymous Vratsa Province. The city of Vratsa is a commercial and crafts centre and a railway junction.</p>
+</div>
+
+<div id="map" class="content">
+	<div id="mapContent"></div>
+</div>
+
+
+<script type="text/javascript">
+
+// var content = document.getElementsByClassName("content");
+// for(i=0; i<content.length; i++){
+// 	content[i].style.display="none";
+// }
+// var links = document.getElementsByClassName("links");
+// for (i =0; i<links.length - 1; i >= 0;  {
+// 0; i<links[i]
+// }
+$(document).ready(function(){
+
+$(".content").css("display", "none");
+$("#textBtn").click(function(e){
+  $("#text").toggle();
+  e.preventDefault();
+});
+$("#mapBtn").click(function(e){
+  $("#map").toggle();
+  e.preventDefault();
+});
+$('#mapBtn').click(
+function() {
+	var locations = [
+{lat: 43.1462, lng: 23.7143, type: "info", name: "Mezdra"},
+{lat: 43.1812, lng: 23.5179, type: "parking", name: "Zgorigrad"},
+{lat: 43.3308, lng: 23.5809, type: "info", name: "Chiren"},
+{lat: 43.4085, lng: 23.2257, type: "info", name: "Montana"},
+{lat: 42.9621, lng: 23.3439, type: "info", name: "Svoge"},
+{lat: 43.4688, lng: 23.9366, type: "info", name: "Byala Slatina"},
+{lat: 43.2370, lng: 23.1251, type: "parking", name: "Berkovitsa"},
+{lat: 43.2102, lng: 23.5529, type: "library", name: "Vratsa"}
+]
+
+var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
+var icons = {
+	parking: {
+            icon: iconBase + 'parking_lot_maps.png'
+          },
+    info: {
+            icon: iconBase + 'info-i_maps.png'
+          },
+    library: {
+            icon: iconBase + 'star.png'
+          }      
+};
+        var map = new google.maps.Map(document.getElementById('mapContent'), {
+          zoom: 9,
+          center: new google.maps.LatLng(43.2102,23.5529 )
+        });
+       
+        for(i in locations){
+        	var marker = new google.maps.Marker({
+        		position: new google.maps.LatLng(locations[i].lat, locations[i].lng),
+       			icon: icons[locations[i].type].icon,
+        		map: map
+        	})
+        	var infowindow = new google.maps.InfoWindow();
+        	content = "This is <b>" + locations[i].name + "</b>";
+        	
+        google.maps.event.addListener(marker,'click', 
+        	(function(marker,content){ 
+        return function() {
+           infowindow.setContent(content);
+           infowindow.open(map,marker);
+        };
+    })(marker,content)); 
+        }
+      
+  })
+      
+    })
+</script>
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLQEFhevjAKJG9BNZETrUcxWhxLyrazNI&callback=initMap">
+    </script>
+</body> 
+</html>
+
